@@ -1,0 +1,49 @@
+.feature-container{
+    width: 100vw;
+    height: auto;
+    background-color: rgb(238, 242, 246);
+    padding: 100px 0;
+}
+
+.main-feature{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    gap: 7.5rem;
+}
+
+.main-feature2{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    gap: 7.5rem;
+    flex-direction: row-reverse;
+}
+
+.text-container{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.check-mark{
+    font-weight: 600;
+    color: #673ab7;
+}
+
+.feature-para{
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.feature-header h1{ 
+    font-size: 50px;
+    color: #2196f3;
+}
+.feature-para div {
+    
+    font-weight: 500;
+    font-size: larger;
+
+}
