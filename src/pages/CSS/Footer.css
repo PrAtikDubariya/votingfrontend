@@ -1,0 +1,138 @@
+.footer-main-container{
+    height: 40vh;
+    background-color: rgb(17, 25, 54);
+}
+
+.footer-contactus-container{
+    height: inherit;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.footer-left-container{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    gap: 2rem;
+}
+
+.footer-contactus-text{
+    font-size: x-large;
+    font-weight: 500;
+    color: rgb(238, 242, 246);
+}
+
+.footer-phone-email{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    color: rgb(238, 242, 246);
+    font-weight: 300;
+}
+
+.footer-form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.footer-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.footer-form textarea, .footer-form input{
+    background-color: rgb(17, 25, 54);
+    border: 2px solid rgb(238, 242, 246);
+    border-radius: 5px;
+    color: rgb(238, 242, 246);
+    padding: 10px 10px;
+    outline: none;
+    resize: none;
+}
+
+.footer-form textarea::placeholder, .footer-form input::placeholder{
+    color: rgb(238, 242, 246);
+    font-weight: 100;
+    font-size: large;
+}
+
+.footer-submit{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border:2px solid rgb(238, 242, 246);
+    background-color: rgb(17, 25, 54);
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    color: rgb(238, 242, 246);
+    font-weight: 500;
+}
+
+.footer-form-feedback{
+    color: rgb(238, 242, 246);
+    font-weight: 500;
+    font-size: x-large;
+}
+
+.footer-copyright-main-container{
+    background-color: rgb(33, 41, 70);
+    width: 100vw;
+}
+
+.footer-copyright-container{
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.copy-right-symbol{
+    color: rgb(105, 117, 134);
+}
+
+.footer-icons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-x{
+    cursor: pointer;
+    color: white;
+    font-size: larger;
+}
+
+.footer-x:hover{
+    color: black;
+}
+
+.footer-utube{
+    cursor: pointer;
+    color: white;
+    font-size: x-large;
+}
+
+.footer-utube:hover{
+    color: red;
+}
+
+.footer-instagram{
+    text-align: center;
+    border-radius: 7px;
+    cursor: pointer;
+    color: white;
+    font-size: larger;
+}
+
+.footer-instagram:hover{
+    background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+}

@@ -5,7 +5,7 @@ const Loader = () => {
     return (
         <div className="main-container">
             <div className="spinner"></div>
-            <div className="message-color"><h1>{"<>"}Loading...{"</>"}</h1></div>
+            <div className="message-color"><h3>{"<>"}Loading...{"</>"}</h3></div>
         </div>
     )
 }

@@ -5,7 +5,6 @@ import feature1Image from "../images/feature1-image.png";
 import feature2Image from "../images/feature2-image.png";
 
 const Feature = () => {
-    
     return (
         <div>
             <div className="feature-container">
@@ -40,9 +39,7 @@ const Feature = () => {
                             </h1>
                         </div>
                         <div>
-                            <div className="feature-para">
-                                <span className="check-mark"><FaRegCircleCheck /></span>
-                                <div>Secure and Transparent Voting</div></div>
+                            <div className="feature-para"><span className="check-mark"><FaRegCircleCheck /></span><div>Secure and Transparent Voting</div></div>
                             <div className="feature-para"><span className="check-mark"><FaRegCircleCheck/></span><div>Decentralized Data Management</div></div>
                             <div className="feature-para"><span className="check-mark"><FaRegCircleCheck/></span><div>Step by Step Voting Process Information</div></div>
                             <div className="feature-para"><span className="check-mark"><FaRegCircleCheck/></span><div>Voter's Data Encryption</div></div>

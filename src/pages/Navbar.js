@@ -39,9 +39,7 @@ const Navbar = () => {
                     <NavLink to="/vote" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
                         color: isActive ? 'black' : 'black',
                         borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
-                     
                         <div className="menu-buttons">Vote</div>
-                    
                     </NavLink>
                     <NavLink to="/register" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
                         color: isActive ? 'black' : 'black',
@@ -50,7 +48,6 @@ const Navbar = () => {
                         <div className="menu-buttons">Register</div>
                    
                     </NavLink>
-                    
                     {isLogIn ? (
                         <div onClick={clickHandler}>
                             <NavLink style={({ isActive }) => ({

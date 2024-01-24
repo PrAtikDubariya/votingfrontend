@@ -11,6 +11,7 @@ import AdminPortal from './pages/admin/AdminPortal';
 import { useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import AdminNavbar from './pages/admin/AdminNavbar';
+import Footer from './pages/Footer';
 
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/admin' element={<AdminPortal/>}/>
       </Routes>
+
+      {isAdminLogIn ? (<div></div>) : <Footer />}
     </div>
   );
 }

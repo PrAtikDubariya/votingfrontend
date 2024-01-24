@@ -1,6 +1,6 @@
 // const logo = "https://cdn-icons-png.flaticon.com/128/12829/12829322.png";
 const logo = "https://cdn-icons-png.flaticon.com/128/5426/5426919.png";
-const contractAddress = "0x4cFCbBbF9F5E6726aC32DaC35b62e543e6D9Faa5";
+const contractAddress = "0xa48EfD819A840a1E6Cf37a9C9BEb346B9aF92285";
 const abi = [
   {
     "anonymous": false,
@@ -50,36 +50,12 @@ const abi = [
     "inputs": [
       {
         "internalType": "string",
-        "name": "_password",
-        "type": "string"
-      }
-    ],
-    "name": "hashPassword",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
         "name": "_enrollmentNumber",
         "type": "string"
       },
       {
         "internalType": "string",
         "name": "_role",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_passWord",
         "type": "string"
       }
     ],
@@ -140,12 +116,7 @@ const abi = [
       },
       {
         "internalType": "string",
-        "name": "_setPassowrd",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_confirmPassword",
+        "name": "_email",
         "type": "string"
       }
     ],

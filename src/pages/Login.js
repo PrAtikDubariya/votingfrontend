@@ -14,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./CSS/Login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import Loader from "./Loader";
+import axios from "axios";
 
 const defaultTheme = createTheme();
 
@@ -21,29 +23,26 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-  const ROLE = ["admin", "student"];
-    const { contractInstance,setAtLogInPage,setIsLogIn,setIsAdminLogIn } = React.useContext(AppContext);
+    const ROLE = ["admin", "student"];
+    const [otp, setOTP] = React.useState("");
+    const [apiIsLogin, setAPIIsLogin] = React.useState(false);
+    const [apiRole, setAPIRole] = React.useState("");
+    const { setAtLogInPage,setIsLogIn,setIsAdminLogIn,setLoading,loading } = React.useContext(AppContext);
     const [studentLogIn, setStudentLogIn] = React.useState({
       enrollmentNumber: "",
       role:"",
-      password: "",
+      otp: "",
     });
 
     async function login() {
-      
-      const enteredRole = studentLogIn.role.toLowerCase();
-
-      const Response = await contractInstance.signIn(studentLogIn.enrollmentNumber,enteredRole,studentLogIn.password);
-      console.log(Response);
           
-      if (Response.role === "admin" && Response.isLogin) {
-
+      if ((apiRole === "admin") && apiIsLogin && (otp === studentLogIn.otp)) {
         toast.success("Login Successful");
         setIsAdminLogIn(true);
         navigate("/admin");
 
       }
-      else if (Response.role === "student" && Response.isLogin) {
+      else if ((apiRole === "student") && apiIsLogin && (otp === studentLogIn.otp)) {
           
           toast.success("Login Successful");
           setIsLogIn(true);
@@ -58,7 +57,7 @@ export default function Login() {
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        console.log(event.target.name, ":", event.target.value);
+        // console.log(event.target.name, ":", event.target.value);
         
         setStudentLogIn((values) => ({ ...values, [name]: value }));
     
@@ -66,19 +65,17 @@ export default function Login() {
   
   const validateInput = () => {
       
-    if (studentLogIn.enrollmentNumber !== "" && studentLogIn.password!=="" && studentLogIn.role!=="") {
+    if (studentLogIn.enrollmentNumber !== "" && studentLogIn.role!=="") {
       
       if (ROLE.includes((studentLogIn.role).toLowerCase())) {
-        login();
+        return true;
       } else {
-        toast.error(`${studentLogIn.role} is Not Available`)
+        toast.error(`${studentLogIn.role} is Not Available`);
       }
 
     }
     else {
-      
-      toast.error("Input Require!")
-
+      toast.error("Input Require!");
     }
 
   }
@@ -86,8 +83,12 @@ export default function Login() {
   const handleSubmit = (event) => {
       
     event.preventDefault();
-    validateInput();
 
+    if (validateInput()) {
+
+      login();
+      
+    }
   }
 
   const clickHandler = () => {
@@ -97,87 +98,142 @@ export default function Login() {
   
   }
 
+  const getOTP = async () => {
+
+    if (validateInput()) {
+
+      setLoading(true);
+      try {
+        const response = await axios.post("http://localhost:3001/api/signin", {
+          enrollmentNumber:studentLogIn.enrollmentNumber,
+          role:studentLogIn.role
+        });
+
+        if (response.data.isLogin) {
+          toast.info("Check Your Mail");
+          setAPIIsLogin(response.data.isLogin);
+          setAPIRole(response.data.role);
+          setOTP((response.data.otp).toString());
+        }
+        else {
+          toast.error("Don't have Account!");
+        }
+
+        
+      } catch (error) {
+        toast.error(error);
+      }
+      setLoading(false);
+
+    }
+    
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "#2196f3" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Log in
-          </Typography>
+        {loading ? <Loader /> :
+          <div className="login-container">
           <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="enrollmentNumber"
-              label="Enrollment Number"
-              name="enrollmentNumber"
-              autoComplete="enrollmentNumber"
-              value={studentLogIn.enrollmentNumber}
-              onChange={handleChange}
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="role"
-              label="Role"
-              name="role"
-              autoComplete="role"
-              value={studentLogIn.role}
-              onChange={handleChange}
-              autoFocus={false}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              value={studentLogIn.password}
-              onChange={handleChange}
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={handleSubmit}
-              sx={{ mt: 3, mb: 2 ,bgcolor: "#673ab7", cursor: "pointer",
-                  ':hover': { backgroundColor: '#673ab7', }}}>
-              Sign In
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item onClick={clickHandler}>
-            <NavLink href="/signup" variant="body2"  style={({ isActive }) => ({
-                textDecoration: isActive ? 'none' : 'none',
-                color: isActive ? '#2196f3' : '#2196f3',
-                })}>
-                {"Don't have an account? Sign Up"}
-            </NavLink>
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
+            <Avatar sx={{ m: 1, bgcolor: "#2196f3" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Log in
+            </Typography>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}>
+              <Grid container spacing={2} >
+                <Grid item xs={12}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="enrollmentNumber"
+                    label="Enrollment Number"
+                    name="enrollmentNumber"
+                    autoComplete="enrollmentNumber"
+                    value={studentLogIn.enrollmentNumber}
+                    onChange={handleChange}
+                    autoFocus />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="role"
+                    label="Role"
+                    name="role"
+                    autoComplete="role"
+                    value={studentLogIn.role}
+                    onChange={handleChange}
+                    autoFocus={false}
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="otp"
+                    label="Enter OTP"
+                    type="text"
+                    id="otp"
+                    value={studentLogIn.otp}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    onClick={getOTP}
+                    sx={{
+                      padding: "15px 0",
+                      bgcolor: "#673ab7", cursor: "pointer",
+                      ':hover': { backgroundColor: '#673ab7', }
+                    }}>
+                    Get OTP
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    onClick={handleSubmit}
+                    sx={{
+                      mt: 1, mb: 2, bgcolor: "#673ab7", cursor: "pointer",
+                      ':hover': { backgroundColor: '#673ab7', }
+                    }}>
+                    Sign In
+                  </Button>
+                </Grid>
+                <Grid container justifyContent="flex-end">
+                  <Grid item onClick={clickHandler}>
+                    <NavLink href="/signup" variant="body2" style={({ isActive }) => ({
+                      textDecoration: isActive ? 'none' : 'none',
+                      color: isActive ? '#2196f3' : '#2196f3',
+                    })}>
+                      {"Don't have an account? Sign Up"}
+                    </NavLink>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
+          </div>}
       </Container>
     </ThemeProvider>
   );
