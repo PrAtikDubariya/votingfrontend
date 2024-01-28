@@ -104,7 +104,7 @@ export default function Login() {
 
       setLoading(true);
       try {
-        const response = await axios.post("http://localhost:3001/api/signin", {
+        const response = await axios.post("http://localhost:3001/api/login/signin", {
           enrollmentNumber:studentLogIn.enrollmentNumber,
           role:studentLogIn.role
         });

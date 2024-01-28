@@ -1,8 +1,140 @@
-.main-nav-container{
-
-    font-size: 50px;
+.admin-nav-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     font-weight: 600;
-    text-align: center;
-    color: #2196f3;
+}
 
+.admin-nav-right-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.admin-nav-notification{
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: large;
+    font-weight: 700;
+}
+
+.admin-nav-logo-container{
+    padding: 5px 0;
+}
+
+.admin-nav-profile-button{
+    position: relative;
+    cursor: pointer;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    background-color: rgb(227, 242, 253);
+    color: rgb(30, 136, 229);
+    font-size: xx-large;
+    border-radius: 0.25rem;
+}
+
+.admin-nav-notification-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-notificaiton-icon{
+    border-radius: 0.25rem;
+    position: relative;
+    background-color: rgb(237, 231, 246);
+    padding: 5px;
+    color: rgb(94, 53, 177);
+    font-weight: 600;
+    font-size: x-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-notificaiton-icon:hover{
+    background-color: rgb(94, 53, 177);
+    color: #fff;
+}
+
+.admin-nav-logout-dropdown{
+    position: absolute;
+    cursor: pointer;
+    width: fit-content;
+    width: 9vh;
+    top: 125%;
+    background-color: #000;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+    padding: 3px 5px;
+    font-size: small;
+    text-align: center;
+}
+
+.admin-nav-notification-dropdown{
+    position: absolute;
+    padding: 2px 5px;
+    cursor: pointer;
+    width: auto;
+    height: 300px;
+    overflow: scroll;
+    top: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+    color: #000;
+    font-size: large;
+    text-align: center;
+}
+
+.admin-notification-dropdown-text{
+    padding-top: 5px;
+    padding-left: 5px;
+    text-align: left;
+    font-size: small;
+    color: rgb(105, 117, 134);
+}
+
+.admin-signed-student-arrow{
+    color: #2196f3;
+}
+
+.admin-signed-student-card{
+    background-color: #f2f2f2;
+    margin: 5px;
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+    text-align: center;
+    /* height: 100px; */
+    color: rgb(54, 65, 82);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: none;
+    border-radius: 8px;
+    border: none rgb(238, 238, 238);
+    position: relative;
+}
+
+.admin-nav-card-detail{
+    width: 200px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: flex-end;
 }

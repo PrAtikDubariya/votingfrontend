@@ -10,6 +10,7 @@ const Navbar = () => {
 
     const { isLogIn, setIsLogIn } = useContext(AppContext);
     const navigate = useNavigate();
+    
     const clickHandler = () => {
         setIsLogIn(false);
         navigate("/");

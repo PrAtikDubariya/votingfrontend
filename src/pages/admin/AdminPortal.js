@@ -5,9 +5,7 @@ const AdminPortal = () => {
     
     return (
         <div>
-            <div className="main-portal-container">
-                This is an Admin Portal
-            </div>
+            <div></div>
         </div>
     )
 
