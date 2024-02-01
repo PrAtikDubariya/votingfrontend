@@ -39,7 +39,7 @@ export default function Login() {
       if ((apiRole === "admin") && apiIsLogin && (otp === studentLogIn.otp)) {
         toast.success("Login Successful");
         setIsAdminLogIn(true);
-        navigate("/admin");
+        navigate("/admin/voters");
 
       }
       else if ((apiRole === "student") && apiIsLogin && (otp === studentLogIn.otp)) {

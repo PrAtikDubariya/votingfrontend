@@ -3,11 +3,13 @@ import "./CSS/AdminNavbar.css";
 import { logo } from "../constants";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+import { FaSearch } from "react-icons/fa";
 import { IoPersonCircle } from "react-icons/io5";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { MdLabelImportant } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 
 const AdminNavbar = () => {
 
@@ -69,12 +71,26 @@ const AdminNavbar = () => {
         <div>
             <div className="admin-nav-container">
                 <div className="admin-nav-logo-container"><img src={logo} alt="logo" height={50} /></div>
+                <div className="admin-nav-search-container">
+                    <div className="admin-nav-search-input"><input /></div>
+                    <div className="admin-nav-search-icon">{<FaSearch/>}</div>
+                </div>
                 <div className="admin-nav-right-container">
+                    <NavLink to="/admin/voters" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
+                        color: isActive ? 'black' : 'black',
+                        borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
+                        <div className="admin-portal-pages admin-nav-voters">Voters</div>
+                    </NavLink>
+                    <NavLink to="/admin/candidates" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
+                        color: isActive ? 'black' : 'black',
+                        borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
+                        <div className="admin-portal-pages admin-nav-candidates">Candidates</div>
+                    </NavLink>
                     <div className="admin-nav-notification"
                         onMouseEnter={toggleNotificationDropDown} onMouseLeave={toggleNotificationDropDownLeave} >
                         <div className="admin-notificaiton-icon">{notificaitonIcon ? (<MdOutlineNotificationsActive />)
-                            : (<IoMdNotificationsOutline />)
-                         }</div>
+                            :(<IoMdNotificationsOutline />)}
+                        </div>
                         {notificationDropDown && 
                         <div className="admin-nav-notification-dropdown">
                             <div className="admin-notification-dropdown-text">Recent Signup Students</div>

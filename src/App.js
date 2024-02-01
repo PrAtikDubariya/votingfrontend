@@ -7,11 +7,12 @@ import Vote from './pages/Vote';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import SignUp from './pages/SignUp';
-import AdminPortal from './pages/admin/AdminPortal';
 import { useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import AdminNavbar from './pages/admin/AdminNavbar';
 import Footer from './pages/Footer';
+import AdminVoters from './pages/admin/AdminVoters';
+import AdminCandidates from './pages/admin/AdminCandidates';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isAdminLogIn ? (<AdminNavbar />) : (<Navbar />)}
+      {!isAdminLogIn ? (<AdminNavbar/>) : (<Navbar />)}
       
       <Routes>
         <Route index path='/' element={<Home/>}/>
@@ -29,10 +30,11 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/signup' element={<SignUp />} />
-        <Route path='/admin' element={<AdminPortal/>}/>
+        <Route path="/admin/voters" element={<AdminVoters />} />
+        <Route path="/admin/candidates" element={<AdminCandidates/>} />
       </Routes>
 
-      {isAdminLogIn ? (<div></div>) : <Footer />}
+      {!isAdminLogIn ? (<div/>) : <Footer />}
     </div>
   );
 }

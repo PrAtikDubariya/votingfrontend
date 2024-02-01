@@ -138,3 +138,62 @@
     margin: 0 auto;
     align-items: flex-end;
 }
+
+.admin-nav-search-container{
+    width: 540px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-nav-search-icon{
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: x-large;
+    background-color: rgb(237, 231, 246);
+    color: rgb(94, 53, 177);
+}
+
+.admin-nav-search-input input {
+    width: 500px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 2px solid rgb(94, 53, 177);
+    outline: none;
+}
+
+.admin-nav-search-input input.inputtext{
+    padding: 20px 10px;
+    line-height: 28px;
+}
+
+.admin-portal-pages{
+    position: relative;
+    cursor: pointer;
+    color: rgb(94, 53, 177);
+    font-size: larger;
+}
+
+.admin-portal-pages::after{
+    position: absolute;
+    content: '';
+    height: 2px;
+    bottom: -2px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 0%;
+    transition:.5s;
+}
+
+.admin-portal-pages:hover::after{
+    width: 100%;
+	background: rgb(94, 53, 177);
+}
