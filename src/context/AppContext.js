@@ -8,12 +8,26 @@ function AppContextProvider({ children }) {
     const [isLogIn, setIsLogIn] = useState(false);
     const [atLogInPage, setAtLogInPage] = useState(true);
     const [isAdminLogIn, setIsAdminLogIn] = useState(false);
-
+    const [isVotingStart, setIsVotingStart] = useState(false);
+    const [candidate, setCandidate] = useState([]);
+    const [allSignUp, setAllSignUp] = useState([]);
+    const [voters, setVoters] = useState([]);
+    const [remainingTime, setRemainingTime] = useState("12:00:00");
+    const [searchInput,setSearchInput] = useState("");
+    const [successRegistration, setSuccessRegistration] = useState(false);
+    
     const value = {
         loading,setLoading,
         isLogIn, setIsLogIn,
         atLogInPage,setAtLogInPage,
-        isAdminLogIn,setIsAdminLogIn,
+        isAdminLogIn, setIsAdminLogIn,
+        isVotingStart, setIsVotingStart,
+        candidate, setCandidate,
+        remainingTime, setRemainingTime,
+        allSignUp, setAllSignUp,
+        voters, setVoters,
+        successRegistration, setSuccessRegistration,
+        searchInput, setSearchInput,
     };
 
     return <AppContext.Provider value={value}>

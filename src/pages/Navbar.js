@@ -23,6 +23,11 @@ const Navbar = () => {
                     <img src={logo} alt="e-DemocraticVotingPortal" className="logo"/>
                 </div>
                 <div className="right-nav">
+                    <NavLink to="/" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
+                        color: isActive ? 'black' : 'black',
+                        borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
+                        <div className="menu-buttons">Home</div>
+                    </NavLink>
                     <NavLink to="/about" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
                         color: isActive ? 'black' : 'black',
                         borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>

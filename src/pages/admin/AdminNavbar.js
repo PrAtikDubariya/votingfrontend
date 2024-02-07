@@ -14,12 +14,13 @@ import { NavLink } from "react-router-dom";
 const AdminNavbar = () => {
 
     const navigate = useNavigate();
-    const { setIsLogIn, setIsAdminLogIn } = useContext(AppContext);
+    const { setIsLogIn, setIsAdminLogIn, searchInput, setSearchInput } = useContext(AppContext);
 
     const [notificaitonIcon, setNotificationIcon] = useState(false);
     const [showDropDown, setShowDropDown] = useState(false);
     const [notificationDropDown, setNotificationDropDown] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [search, setSearch] = useState("");
 
     const handleLogOut = () => {
         setIsLogIn(false);
@@ -28,9 +29,7 @@ const AdminNavbar = () => {
     }
 
     const addNotification = (message) => {
-        console.log(message);
         const messages = Array.isArray(message) ? message : [message];
-        console.log(messages);
         let latestNotifications = [...notifications, ...messages];
         if (latestNotifications.length >= 5) {
             latestNotifications = latestNotifications.slice(-5);    
@@ -47,6 +46,12 @@ const AdminNavbar = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const getSingleVoterData = () => {
+        console.log(search);
+        setSearchInput(search);
+        console.log(searchInput);
     }
 
     useEffect(() => {
@@ -72,8 +77,15 @@ const AdminNavbar = () => {
             <div className="admin-nav-container">
                 <div className="admin-nav-logo-container"><img src={logo} alt="logo" height={50} /></div>
                 <div className="admin-nav-search-container">
-                    <div className="admin-nav-search-input"><input /></div>
-                    <div className="admin-nav-search-icon">{<FaSearch/>}</div>
+                    <div className="admin-nav-search-input">
+                        <input
+                            name="enrollmentNumber"
+                            placeholder="Enter Enrollment" 
+                            onChange={(event)=> setSearch(event.target.value)}
+                            /></div>
+                    <div className="admin-nav-search-icon">{<FaSearch
+                        onClick={getSingleVoterData}
+                    />}</div>
                 </div>
                 <div className="admin-nav-right-container">
                     <NavLink to="/admin/voters" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',

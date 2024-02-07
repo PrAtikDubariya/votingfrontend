@@ -1,3 +1,54 @@
 .admin-voter-main-container{
-    
+    width: 1200px;
+    margin: 4rem auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 1rem;
+    grid-row-gap: 4rem;
+}
+
+.voters-card-container{
+    width: 350px;
+}
+
+.voters-card-main-container{
+    padding: 1rem;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 1rem;
+    background-color: rgb(227, 242, 253);
+    -webkit-box-shadow: 3px 3px 10px 3px #dddddd;
+    -moz-box-shadow: 3px 3px 10px 3px #dddddd;
+    box-shadow: 3px 3px 10px 3px #dddddd;
+
+}
+
+.voters-card-text{
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.voters-card-basic-info{
+    text-align: center;
+    font-size: larger;
+    font-weight: 600;
+    color: rgb(30, 136, 229);
+}
+
+.voters-card-other-info{
+    text-align: left;
+    font-weight: 500;
+}
+
+.remove-card-icon{
+    width: max-content;
+    cursor: pointer;
+    text-align: left;
+    font-size: larger;
+    padding-top: 5px;
+    color: rgb(94, 53, 177);
 }
