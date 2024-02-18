@@ -8,13 +8,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AppContext } from '../../context/AppContext';
+import Loader from '../Loader';
 
 
 const defaultTheme = createTheme();
 
 export default function AdminRegisterCandidate() {
 
-  const { setSuccessRegistration } = React.useContext(AppContext);
+  const { setSuccessRegistration,setLoading,loading } = React.useContext(AppContext);
 
   const [register, setRegister] = React.useState({
     enrollmentNumber:"",
@@ -44,17 +45,19 @@ export default function AdminRegisterCandidate() {
   }
 
   const registerCandidate = async () => {
-    
     try {
       const response = await axios.post("http://localhost:3001/api/admin/registercandidate", {
         enrollmentNumber: register.enrollmentNumber,
       });
-
-      if (response.data.candidate.enrollmentNumber === "") {
-        toast.success(`${(register.enrollmentNumber).toUpperCase()} is Registered`);
-      }
-      else {
-        toast.info(`${(register.enrollmentNumber).toUpperCase()} is already Registered`);
+      if (!response.data.isLock) {
+        if (response.data.candidate.enrollmentNumber === "") {
+          toast.success(`${(register.enrollmentNumber).toUpperCase()} is Registered`);
+        }
+        else {
+          toast.info(`${(register.enrollmentNumber).toUpperCase()} is already Registered`);
+        }
+      } else {
+        toast.info(`Already Requested, Wait Before Try Again`);
       }
       setSuccessRegistration(true);
     } catch (error) {
@@ -64,6 +67,7 @@ export default function AdminRegisterCandidate() {
   }
 
   const isCandidateSignUp = async () => {
+    setLoading(true);
     const response = await axios.post("http://localhost:3001/api/login/getalldata");
     const allSignUps = response.data.signUpData;
     const enrollmentNumbers = allSignUps.map(student => student.enrollmentNumber);
@@ -74,7 +78,7 @@ export default function AdminRegisterCandidate() {
     else {
       toast.error("Student not SignUp");
     }
-
+    setLoading(false);
   }
 
   const handleSubmit = (event) => {
@@ -91,46 +95,48 @@ export default function AdminRegisterCandidate() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+        {loading ? <Loader/> :
           <Box
             sx={{
-              fontSize: 30,
-              fontWeight: "600",
-              color: "rgb(94, 53, 177)",
-              textAlign: "center",
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            Register Candidate Here
-          </Box>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="enrollmentNumber"
-              label="Enrollment Number"
-              name="enrollmentNumber"
-              autoComplete="enrollmentNumber"
-              autoFocus
-              onChange={handleChange}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <Box
+              sx={{
+                fontSize: 30,
+                fontWeight: "600",
+                color: "rgb(94, 53, 177)",
+                textAlign: "center",
+              }}
             >
-              Register Candidate
-            </Button>
+              Register Candidate Here
+            </Box>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="enrollmentNumber"
+                label="Enrollment Number"
+                name="enrollmentNumber"
+                autoComplete="enrollmentNumber"
+                autoFocus
+                onChange={handleChange}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Register Candidate
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        }
       </Container>
     </ThemeProvider>
   );

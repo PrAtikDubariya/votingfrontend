@@ -15,7 +15,6 @@ const AdminCandidates = () => {
         successRegistration, setSuccessRegistration
     } = useContext(AppContext);
     
-    // const [currentStatementIndex, setCurrentStatementIndex] = useState(0);
     const [currentStatementIndex, setCurrentStatementIndex] = useState(0);
     const [votingDuration, setVotingDuration] = useState(12 * 60 * 60);
 
@@ -125,7 +124,7 @@ const AdminCandidates = () => {
                                     label="Voting Time (in min)"
                                     name="votingTime"
                                     autoComplete="votingTime"
-                                    autoFocus
+                                    autoFocus={false}
                                     onChange={handleDurationChange}
                                     />
                                     <Button

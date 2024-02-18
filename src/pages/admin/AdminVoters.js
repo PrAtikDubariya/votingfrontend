@@ -15,7 +15,7 @@ const AdminVoters = () => {
             setLoading(true);
             try {
                 const response = await axios.post("http://localhost:3001/api/admin/getallvoter");
-                setVoters(response.data.signUpData);
+                setVoters(response.data.voterData);
             } catch (error) {
                 console.log(error);
             }
@@ -37,7 +37,10 @@ const AdminVoters = () => {
         console.log("voters state updated:", voters);
     }, [voters]);
 
-    const handleRemoveVoter = (enrollmentNumber) => {
+    const handleRemoveVoter = async (enrollmentNumber) => {
+        setLoading(true);
+        enrollmentNumber = enrollmentNumber.toLowerCase();
+
         console.log("Removing voter with enrollment number:", enrollmentNumber);
 
         setVoters((prevVoters) => {
@@ -45,7 +48,14 @@ const AdminVoters = () => {
             console.log("Updated voters array:", votersArray);
             return votersArray;
         });
+        
+        const response = await axios.post("http://localhost:3001/api/admin/remove/voter", {
+            enrollmentNumber:enrollmentNumber
+        });
+        console.log(response);
+
         toast.success("done");
+        setLoading(false);
     };
 
     const votersToRender = searchInput !== "" ? filteredVoters : voters;

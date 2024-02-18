@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isAdminLogIn ? (<AdminNavbar />) : (<Navbar />)}
+      {isAdminLogIn ? (<AdminNavbar />) : (<Navbar />)}
       
       <Routes>
         <Route index path='/' element={<Home/>}/>
@@ -34,7 +34,7 @@ function App() {
         <Route path="/admin/candidates" element={<AdminCandidates/>} />
       </Routes>
 
-      {!isAdminLogIn ? (<div/>) : <Footer />}
+      {isAdminLogIn ? (<div/>) : <Footer />}
     </div>
   );
 }

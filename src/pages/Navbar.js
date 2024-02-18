@@ -4,15 +4,17 @@ import {logo} from "./constants"
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { IoPersonCircle } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 
 const Navbar = () => {
 
-    const { isLogIn, setIsLogIn } = useContext(AppContext);
+    const { isLogIn, setIsLogIn,setIsRegister,isRegister } = useContext(AppContext);
     const navigate = useNavigate();
     
     const clickHandler = () => {
         setIsLogIn(false);
+        setIsRegister(false);
         navigate("/");
     }
     
@@ -33,18 +35,22 @@ const Navbar = () => {
                         borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
                         <div className="menu-buttons">About</div>
                     </NavLink>
-                    <NavLink to="/vote" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
-                        color: isActive ? 'black' : 'black',
-                        borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
-                        <div className="menu-buttons">Vote</div>
-                    </NavLink>
-                    <NavLink to="/register" style={({ isActive }) => ({textDecoration: isActive ? 'none' : 'none',
-                        color: isActive ? 'black' : 'black',
-                        borderBottom: isActive ? '2px solid #673ab7' : 'none'})}>
-                      
-                        <div className="menu-buttons">Register</div>
-                   
-                    </NavLink>
+                    {isLogIn ?
+                    <NavLink to="/register" style={({ isActive }) => ({
+                            textDecoration: isActive ? 'none' : 'none',
+                            color: isActive ? 'black' : 'black',
+                            borderBottom: isActive ? '2px solid #673ab7' : 'none'
+                        })}>
+                            <div className="menu-buttons">Register</div>
+                    </NavLink>:<div onClick={()=> {toast.error("You have not Login")}} className="menu-buttons">Register</div>}
+                    {isRegister ?
+                        <NavLink to="/vote" style={({ isActive }) => ({
+                            textDecoration: isActive ? 'none' : 'none',
+                            color: isActive ? 'black' : 'black',
+                            borderBottom: isActive ? '2px solid #673ab7' : 'none'
+                        })}>
+                            <div className="menu-buttons">Vote</div>
+                        </NavLink> : <div onClick={()=> {toast.error("You have not Register")}} className="menu-buttons">Voter</div>}
                     {isLogIn ? (
                         <div onClick={clickHandler}>
                             <NavLink style={({ isActive }) => ({

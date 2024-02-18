@@ -177,7 +177,7 @@ export default function SignUp() {
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-          {loading ? <Loader /> :
+          {loading ? <div className="loader-main-container"><Loader/></div> :
             <div className="signup-container">
               <Box
                 sx={{

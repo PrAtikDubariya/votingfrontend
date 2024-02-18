@@ -11,11 +11,11 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./CSS/Login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
-import Loader from "./Loader";
 import axios from "axios";
+import Loader from "./Loader";
+import "./CSS/Login.css";
 
 const defaultTheme = createTheme();
 
@@ -27,7 +27,7 @@ export default function Login() {
     const [otp, setOTP] = React.useState("");
     const [apiIsLogin, setAPIIsLogin] = React.useState(false);
     const [apiRole, setAPIRole] = React.useState("");
-    const { setAtLogInPage,setIsLogIn,setIsAdminLogIn,setLoading,loading } = React.useContext(AppContext);
+    const { setAtLogInPage,setIsLogIn,setIsAdminLogIn,setLoading,loading,setTrackStudent,setIsRegister } = React.useContext(AppContext);
     const [studentLogIn, setStudentLogIn] = React.useState({
       enrollmentNumber: "",
       role:"",
@@ -35,7 +35,6 @@ export default function Login() {
     });
 
     async function login() {
-          
       if ((apiRole === "admin") && apiIsLogin && (otp === studentLogIn.otp)) {
         toast.success("Login Successful");
         setIsAdminLogIn(true);
@@ -57,7 +56,6 @@ export default function Login() {
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        // console.log(event.target.name, ":", event.target.value);
         
         setStudentLogIn((values) => ({ ...values, [name]: value }));
     
@@ -80,14 +78,28 @@ export default function Login() {
 
   }
 
+  const checkRegistrationStatus = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/admin/getsinglevoter", {
+        enrollmentNumber:studentLogIn.enrollmentNumber
+      });
+      console.log(response);
+      if (response.data.voterData.enrollmentNumber === studentLogIn.enrollmentNumber) {
+        setIsRegister(true);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong");
+    }
+  }
+
   const handleSubmit = (event) => {
       
     event.preventDefault();
 
     if (validateInput()) {
-
       login();
-      
+      checkRegistrationStatus();
     }
   }
 
@@ -108,12 +120,12 @@ export default function Login() {
           enrollmentNumber:studentLogIn.enrollmentNumber,
           role:studentLogIn.role
         });
-
         if (response.data.isLogin) {
           toast.info("Check Your Mail");
           setAPIIsLogin(response.data.isLogin);
           setAPIRole(response.data.role);
           setOTP((response.data.otp).toString());
+          setTrackStudent(response.data.enrollmentNumber);
         }
         else {
           toast.error("Don't have Account!");
@@ -133,7 +145,7 @@ export default function Login() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        {loading ? <Loader /> :
+        {loading ? <div className="loader-main-container"><Loader/></div> :
           <div className="login-container">
           <Box
             sx={{

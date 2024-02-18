@@ -6,10 +6,10 @@ import stepVoteDashboard from "../images/step-vote-dashboard.png";
 import stepCandidate from "../images/step-candidate.png";
 
 const VoteStep = () => {
-    
+
     return (
-        <div className="main-container">
-            <div className="vote-step-container">
+        <div className="vote-step-main-container">
+            <div className="vote-step-sub-container">
                 <div className="header-vote">
                     Follow Steps to Vote
                 </div>
