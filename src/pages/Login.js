@@ -80,11 +80,12 @@ export default function Login() {
 
   const checkRegistrationStatus = async () => {
     try {
+      console.log(studentLogIn.enrollmentNumber);
       const response = await axios.post("http://localhost:3001/api/admin/getsinglevoter", {
         enrollmentNumber:studentLogIn.enrollmentNumber
       });
       console.log(response);
-      if (response.data.voterData.enrollmentNumber === studentLogIn.enrollmentNumber) {
+      if (response.data.voterData.enrollmentNumber === studentLogIn.enrollmentNumber.toUpperCase()) {
         setIsRegister(true);
       }
     } catch (error) {

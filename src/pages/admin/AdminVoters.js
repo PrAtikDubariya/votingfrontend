@@ -24,7 +24,7 @@ const AdminVoters = () => {
             }
         };
         fetchVoters();
-    }, []);
+    }, [setVoters,setLoading]);
 
     const filteredVoters = voters.filter(voter =>
         voter.enrollmentNumber.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -39,22 +39,26 @@ const AdminVoters = () => {
 
     const handleRemoveVoter = async (enrollmentNumber) => {
         setLoading(true);
-        enrollmentNumber = enrollmentNumber.toLowerCase();
+        enrollmentNumber = enrollmentNumber.toUpperCase();
 
-        console.log("Removing voter with enrollment number:", enrollmentNumber);
-
-        setVoters((prevVoters) => {
-            const votersArray = prevVoters.filter((voter) => voter.enrollmentNumber !== enrollmentNumber);
-            console.log("Updated voters array:", votersArray);
-            return votersArray;
-        });
-        
-        const response = await axios.post("http://localhost:3001/api/admin/remove/voter", {
-            enrollmentNumber:enrollmentNumber
-        });
-        console.log(response);
-
-        toast.success("done");
+        try {
+            const response = await axios.post("http://localhost:3001/api/admin/remove/voter", {
+                enrollmentNumber:enrollmentNumber
+            });
+            toast.success(response.data.message);
+        } catch (error) {
+            toast.error("removing Unsucessfull");
+            console.log(error);
+        }
+        try {
+            const response = await axios.post("http://localhost:3001/api/admin/getallvoter");
+            setVoters(response.data.voterData);
+        } catch (error) {
+            console.log(error);
+        }
+        finally {
+            setLoading(false)
+        }
         setLoading(false);
     };
 

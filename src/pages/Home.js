@@ -7,11 +7,9 @@ import VoteStep from "./VoteStep";
 const Home = () => {
 
     const navigate = useNavigate();
-    
+
     const scroll = () => {
 
-        // let scroll = document.getElementById("featureScroll");
-        // scroll.scrollIntoView();
         navigate("/about");
     
     }

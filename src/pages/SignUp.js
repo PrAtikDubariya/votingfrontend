@@ -30,9 +30,9 @@ export default function SignUp() {
     firstName: "",
     lastName: "",
     admissionYear: 0,
-    enrollmentNumber: "".toUpperCase(),
-    branch: "".toUpperCase(),
-    gender: "".toUpperCase(),
+    enrollmentNumber: "",
+    branch: "",
+    gender: "",
     email:"",
     otp:"",
   });

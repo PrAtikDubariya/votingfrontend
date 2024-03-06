@@ -15,17 +15,26 @@ const defaultTheme = createTheme();
 
 export default function AdminRegisterCandidate() {
 
-  const { setSuccessRegistration,setLoading,loading } = React.useContext(AppContext);
+  const { setSuccessRegistration, isVotingStart } = React.useContext(AppContext);
+  const [loading, setLoading] = React.useState(false);
+  const containerRef = React.useRef(null);
 
   const [register, setRegister] = React.useState({
     enrollmentNumber:"",
   });
-  
+
+  React.useEffect(() => {
+    if (containerRef.current) {
+      const height = containerRef.current.offsetHeight;
+      document.documentElement.style.setProperty('--loader-height', `${height}px`);
+    }
+  }, [loading]);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     console.log(value);
+    console.log(isVotingStart);
     setRegister(values => ({ ...values, [name]: value }));
   }
 
@@ -72,7 +81,7 @@ export default function AdminRegisterCandidate() {
     const allSignUps = response.data.signUpData;
     const enrollmentNumbers = allSignUps.map(student => student.enrollmentNumber);
 
-    if (enrollmentNumbers.includes(register.enrollmentNumber)) {
+    if (enrollmentNumbers.includes(register.enrollmentNumber.toUpperCase())) {
       await registerCandidate();
     }
     else {
@@ -84,18 +93,25 @@ export default function AdminRegisterCandidate() {
   const handleSubmit = (event) => {
 
     event.preventDefault();
-
-    if (validateInput()) {
-      isCandidateSignUp();
+    if (isVotingStart) {
+      toast.info("Can not Register While Voting is Started");
+      console.log("Voting Started",isVotingStart);
+    } else {
+      if (validateInput()) {
+        isCandidateSignUp();
+      } 
     }
-    
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" ref={containerRef}>
         <CssBaseline />
-        {loading ? <Loader/> :
+        {loading ? <Box
+          display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '273px' }}
+        >
+          <Loader/>
+        </Box> :
           <Box
             sx={{
               marginTop: 8,

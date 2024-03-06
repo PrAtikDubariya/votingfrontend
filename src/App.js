@@ -7,17 +7,45 @@ import Vote from './pages/Vote';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import SignUp from './pages/SignUp';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from './context/AppContext';
 import AdminNavbar from './pages/admin/AdminNavbar';
 import Footer from './pages/Footer';
 import AdminVoters from './pages/admin/AdminVoters';
 import AdminCandidates from './pages/admin/AdminCandidates';
+import { io } from 'socket.io-client';
+import { ADDRESS } from './pages/constants';
+import { toast } from 'react-toastify';
+
 
 
 function App() {
 
-  const { isAdminLogIn } = useContext(AppContext);
+  const { isAdminLogIn, setIsVotingStart, setVotingDuration } = useContext(AppContext);
+
+  useEffect(() => {
+    const socket = io.connect(ADDRESS);
+
+    socket.on('connect', () => {
+        console.log('Connected to server');
+    });
+
+    socket.on('votingStarted', ({ isVotingStart }) => {
+        console.log('Voting has started:', isVotingStart);
+        toast.info("Voting has been started");
+        setIsVotingStart(true);
+    });
+
+    socket.on('votingDuration', ({ votingDuration }) => {
+      setVotingDuration(votingDuration);
+    });
+
+    socket.on('votingEnded', ({ isVotingStart }) => {
+      toast.info("Voting has been ended");
+      setIsVotingStart(isVotingStart);
+    })
+    
+}, [setIsVotingStart,setVotingDuration]);
 
   return (
     <div className="App">

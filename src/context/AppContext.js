@@ -14,6 +14,7 @@ function AppContextProvider({ children }) {
     const [allSignUp, setAllSignUp] = useState([]);
     const [voters, setVoters] = useState([]);
     const [remainingTime, setRemainingTime] = useState("12:00:00");
+    const [ votingDuration, setVotingDuration ] = useState(12 * 60 * 60);
     const [searchInput, setSearchInput] = useState("");
     const [trackStudent, setTrackStudent] = useState({
         enrollmentNumber: ""
@@ -29,6 +30,7 @@ function AppContextProvider({ children }) {
         isVotingStart, setIsVotingStart,
         candidate, setCandidate,
         remainingTime, setRemainingTime,
+        votingDuration, setVotingDuration,
         allSignUp, setAllSignUp,
         voters, setVoters,
         successRegistration, setSuccessRegistration,

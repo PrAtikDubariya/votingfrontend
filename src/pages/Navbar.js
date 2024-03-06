@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./CSS/Navbar.css";
-import {logo} from "./constants"
+import { logo } from "./constants";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { IoPersonCircle } from "react-icons/io5";

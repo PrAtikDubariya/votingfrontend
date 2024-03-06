@@ -11,18 +11,20 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import Loader from "./Loader";
 import "./CSS/Register.css";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 const Register = () => {
 
+    const navigate = useNavigate();
     const ROLE = ["candidate", "voter"];
-    const { loading, setLoading,trackStudent,setVoters,setIsRegister } = React.useContext(AppContext);
+    const { loading, setLoading, trackStudent, setVoters, setIsRegister } = React.useContext(AppContext);
+    const [isVotingStart, setIsVotingStart] = React.useState(false);
     const [otp, setOTP] = React.useState("");
     const [studentRegister, setStudentRegister] = React.useState({
         enrollmentNumber: "",
@@ -30,18 +32,32 @@ const Register = () => {
         otp: "",
     });
 
-    const getOTP = async () => {
-
-        const validateInputResponse = await validateInput();
-        console.log(validateInputResponse);
-        if (validateInputResponse) {
-            const response = await axios.post("http://localhost:3001/api/login/getotp/registration", {
-                enrollmentNumber: studentRegister.enrollmentNumber
-            });
-            toast.info("Check Your Mail");
-            setOTP(response.data.otp);
+    React.useEffect(() => {
+        const fetchVotingStatus = async () => {
+            const response = await axios.post("http://localhost:3001/api/admin/get/voting/status");
+            if (response.data.votingStatus === true) {
+                console.log(response.data.votingStatus);
+                setIsVotingStart(response.data.votingStatus);
+            }
         }
+        fetchVotingStatus();
+    },[isVotingStart,setIsVotingStart]);
 
+    const getOTP = async () => {
+        if (isVotingStart) {
+            toast.error("Voting Started");
+        } else {
+            const validateInputResponse = await validateInput();
+            console.log(validateInputResponse);
+            if (validateInputResponse) {
+                const response = await axios.post("http://localhost:3001/api/login/getotp/registration", {
+                    enrollmentNumber: studentRegister.enrollmentNumber
+                });
+                toast.info("Check Your Mail");
+                setOTP(response.data.otp);
+            }
+        }
+        
     }
 
     const registerVoterAndCandidate = async () => {
@@ -97,7 +113,7 @@ const Register = () => {
         console.log("ENROLL",studentRegister.enrollmentNumber);
         if (studentRegister.enrollmentNumber !== "" && studentRegister.role!=="") {
             if (ROLE.includes((studentRegister.role).toLowerCase())) {
-                if (studentRegister.enrollmentNumber === trackStudent) {
+                if (studentRegister.enrollmentNumber.toUpperCase() === trackStudent.toUpperCase()) {
                     return true;
                 } else {
                     toast.error("It seems you have entered wrong enrollment");
@@ -124,7 +140,11 @@ const Register = () => {
         event.preventDefault();
         registerVoterAndCandidate();
     }
-    
+
+    const goToVotePage = () => {
+        navigate("/vote");
+    }
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -220,7 +240,18 @@ const Register = () => {
                     </Grid>
                 </Box>
             </Box>
-            </div>}
+                </div>}
+                {isVotingStart &&
+                <div className="cast-vote-popup-main-container">
+                    <div className="cast-vote-confirmation-popup">
+                            <p>Voting is Started</p>
+                            <p>Click Yes To Go Vote Page</p>
+                        <div className="vote-page-confirmation-popup-button">
+                            <div onClick={goToVotePage}>Yes</div>
+                        </div>
+                    </div>
+                </div>    
+            }
         </Container>
     </ThemeProvider>
     )

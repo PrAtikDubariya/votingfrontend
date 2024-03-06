@@ -6,17 +6,19 @@ import axios from "axios";
 import { TextField } from "@mui/material";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Loader from "../Loader";
 
 const AdminCandidates = () => {
 
     const { remainingTime, setRemainingTime,
         isVotingStart, setIsVotingStart,
         candidate, setCandidate,
-        successRegistration, setSuccessRegistration
+        successRegistration, setSuccessRegistration,
+        votingDuration, setVotingDuration
     } = useContext(AppContext);
     
+    const [loading, setLoading] = useState(false);
     const [currentStatementIndex, setCurrentStatementIndex] = useState(0);
-    const [votingDuration, setVotingDuration] = useState(12 * 60 * 60);
 
     const statements = [
         'College President',
@@ -32,10 +34,9 @@ const AdminCandidates = () => {
         }, 5000);
     
         return () => clearInterval(interval);
-    }, []);
+    }, [statements.length]);
 
     useEffect(() => {
-        console.log(successRegistration);
         const fetchVoters = async () => {
             const response = await axios.post("http://localhost:3001/api/admin/getallcandidate");
             console.log(response);
@@ -47,15 +48,19 @@ const AdminCandidates = () => {
         fetchVoters();
     },[setCandidate,successRegistration,setSuccessRegistration]);
     
-    const startVotingHandler = () => {
-        if (!isVotingStart) {
-            setIsVotingStart(true);
-            startTimer();
-        }
+    const startVotingHandler = async () => {
+        setLoading(true);
+        await axios.post("http://localhost:3001/api/admin/set/voting/status/true", {
+            votingDuration:votingDuration
+        });
+        startTimer();
+        setLoading(false);
     }
 
-    const endVotingHandler = () => {
-        setIsVotingStart(false);
+    const endVotingHandler = async () => {
+        const response = await axios.post("http://localhost:3001/api/admin/set/voting/status/false");
+        console.log(response.data.isVotingStart);
+        setIsVotingStart(response.data.isVotingStart);
         setRemainingTime("00:00:00");
     };
 
@@ -91,6 +96,8 @@ const AdminCandidates = () => {
         if (!isNaN(parsedValue) && parsedValue > 0) {
           setVotingDuration(parsedValue * 60);
         }
+
+        console.log(isVotingStart);
     };
     
     return (
@@ -104,43 +111,44 @@ const AdminCandidates = () => {
                 </div>
                 <div className="admin-candidate-register-candidate">
                     <AdminRegisterCandidate />
-                    <div className="admin-candidate-start-voting-uppar-container">
-                        <div className="admin-candidate-start-voting">
-                            {isVotingStart ? <div className="admin-candidate-time-remain"> Time Remain : {remainingTime}</div> :
-                                <div className="admin-candidate-time-remain">Time Remain : 00:00:00</div>}
-                            <div className="admin-candidate-change-statements-container">
-                                <div className="admin-candidate-start-voting-statement">Start Voting For</div>
-                                <div className="admin-candidate-change-statements">{statements[currentStatementIndex]}</div>
-                            </div>
-                            {isVotingStart ? <div className="admin-candidate-start-voting-button">Voting Started</div> :
-                            <div>
-                                <div>
-                                <Box component="form" noValidate sx={{ mt: 1 }}>
-                                    <TextField
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="startVoting"
-                                    label="Voting Time (in min)"
-                                    name="votingTime"
-                                    autoComplete="votingTime"
-                                    autoFocus={false}
-                                    onChange={handleDurationChange}
-                                    />
-                                    <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
-                                    onClick={startVotingHandler}
-                                    >
-                                    Start Voting
-                                    </Button>
-                                </Box>
+                    {loading ? <div className="admin-candidate-start-voting-uppar-container"><Loader/></div> :
+                        <div className="admin-candidate-start-voting-uppar-container">
+                            <div className="admin-candidate-start-voting">
+                                {isVotingStart ? <div className="admin-candidate-time-remain"> Time Remain : {remainingTime}</div> :
+                                    <div className="admin-candidate-time-remain">Time Remain : 00:00:00</div>}
+                                <div className="admin-candidate-change-statements-container">
+                                    <div className="admin-candidate-start-voting-statement">Start Voting For</div>
+                                    <div className="admin-candidate-change-statements">{statements[currentStatementIndex]}</div>
                                 </div>
-                            </div>}
-                        </div>
-                    </div>
+                                {isVotingStart ? <div className="admin-candidate-start-voting-button">Voting Started</div> :
+                                    <div>
+                                        <div>
+                                            <Box component="form" noValidate sx={{ mt: 1 }}>
+                                                <TextField
+                                                    margin="normal"
+                                                    required
+                                                    fullWidth
+                                                    id="startVoting"
+                                                    label="Voting Time (in min)"
+                                                    name="votingTime"
+                                                    autoComplete="votingTime"
+                                                    autoFocus={false}
+                                                    onChange={handleDurationChange}
+                                                />
+                                                <Button
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="contained"
+                                                    sx={{ mt: 3, mb: 2 }}
+                                                    onClick={startVotingHandler}
+                                                >
+                                                    Start Voting
+                                                </Button>
+                                            </Box>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>}
                     {candidate.length > 0 ? <div className="admin-candidate-card-main-container">
                     <div className="admin-candidate-card-container">
                         {candidate.slice().reverse().map((candidate, index) => (
