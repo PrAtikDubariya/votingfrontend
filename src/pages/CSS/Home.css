@@ -67,3 +67,52 @@
     box-shadow: 3px 3px 10px 3px #ddd;
     transition: all 300ms ease-in-out;
 }
+
+/* Modal Container */
+.result-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is on top of other content */
+  }
+  
+  /* Modal Content */
+  .result-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Drop shadow effect */
+  }
+  
+  /* Modal Heading */
+  .result-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  /* Winner Information */
+  .result-content div {
+    margin-bottom: 20px;
+  }
+  
+  /* Close Button */
+  .close-button {
+    background-color: #ff6347; /* Coral color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Close Button Hover Effect */
+  .close-button:hover {
+    background-color: #ff4837; /* Darker shade of coral */
+  }
+  

@@ -14,13 +14,15 @@ function AppContextProvider({ children }) {
     const [allSignUp, setAllSignUp] = useState([]);
     const [voters, setVoters] = useState([]);
     const [remainingTime, setRemainingTime] = useState("12:00:00");
-    const [ votingDuration, setVotingDuration ] = useState(12 * 60 * 60);
+    const [ votingDuration, setVotingDuration ] = useState(null);
     const [searchInput, setSearchInput] = useState("");
     const [trackStudent, setTrackStudent] = useState({
         enrollmentNumber: ""
     });
     const [successRegistration, setSuccessRegistration] = useState(false);
-    
+    const [isResult, setIsResult] = useState(false);
+    const [winners, setWinners] = useState([]);
+
     const value = {
         loading,setLoading,
         isLogIn, setIsLogIn,
@@ -36,6 +38,8 @@ function AppContextProvider({ children }) {
         successRegistration, setSuccessRegistration,
         trackStudent, setTrackStudent,
         searchInput, setSearchInput,
+        isResult, setIsResult,
+        winners, setWinners,
     };
 
     return <AppContext.Provider value={value}>

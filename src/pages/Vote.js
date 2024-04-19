@@ -5,10 +5,11 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { MdLabelImportant } from "react-icons/md";
 import { toast } from "react-toastify";
+import Loader from "./Loader";
 
 const Vote = () => {
 
-    const { isVotingStart,trackStudent,setIsVotingStart,votingDuration, setRemainingTime, } = useContext(AppContext);
+    const { isVotingStart,trackStudent,setIsVotingStart,votingDuration,setRemainingTime,remainingTime,loading,setLoading } = useContext(AppContext);
     const [candidate, setCandidate] = useState([]);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -18,49 +19,50 @@ const Vote = () => {
         const fetchVoters = async () => {
             try {
                 const response = await axios.post("http://localhost:3001/api/admin/getallcandidate");
-                console.log(response.data.candidateData);
                 setCandidate(response.data.candidateData);
-                setIsVotingStart(isVotingStart);
             } catch (error) {
                 console.log(error);
             }
         }
         fetchVoters();
     }, [setIsVotingStart, isVotingStart]);
-    
-    useEffect(() => {
-        // Update remaining time every second if voting is ongoing
-        if (isVotingStart && votingDuration) {
-            const intervalId = setInterval(() => {
-                const now = Date.now();
-                const endTime = now + votingDuration * 60 * 1000; // Convert voting duration to milliseconds
-                const timeDifference = endTime - now;
 
-                if (timeDifference <= 0) {
-                    setRemainingTime("00:00:00"); // If time is up, set remaining time to 00:00:00
-                } else {
-                    const formattedTime = formatTime(timeDifference);
-                    setRemainingTime(formattedTime);
-                }
-            }, 1000); // Update every second
-
-            return () => clearInterval(intervalId); // Cleanup the interval
+    const calculateRemainingTime = () => {
+        const endTime = new Date(votingDuration);
+        const difference = endTime - new Date();
+        if (difference > 0) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            return "Voting ended";
         }
-    }, [isVotingStart, votingDuration,setRemainingTime]);
-
-    // Function to format time in HH:mm:ss format
-    const formatTime = (timeDifference) => {
-        const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeDifference / 1000) % 60);
-
-        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     };
-    
+
+    useEffect(() => {
+        // Update remaining time every second
+        const timer = setInterval(() => {
+            setRemainingTime(calculateRemainingTime());
+        }, 1000);
+
+        // Clear the interval on component unmount
+        return () => clearInterval(timer);
+    }, [votingDuration]);
+
 
     const castVote = async () => {
         console.log("Voter is :", trackStudent);
         console.log("Candidate is :", selectedCandidate);
+        setLoading(true);
+
+        const response = await axios.post("http://localhost:3001/api/login/cast/vote", {
+            voterId: trackStudent,
+            candidateId: selectedCandidate
+        });
+        toast.info(`${response.data.message}`);
+        setLoading(false);
         setShowConfirmation(false);
         document.body.style.overflow = '';
 
@@ -93,9 +95,9 @@ const Vote = () => {
                                 {isVotingStart ? <div className="vote-page-voting-text">Voting is Started</div> :
                                     <div className="vote-page-voting-text">Voting is Not Started Yet</div>}
                                 <div>
-                                    {/* {votingDuration && <div>
+                                    {votingDuration && <div>
                                         <span>Remaining Time : </span><span>{remainingTime}</span>
-                                    </div>} */}
+                                    </div>}
                                     <div>Democracy is about voting and it’s about a majority vote.</div>
                                     <div>And it’s time that we started exercising the Democratic process.</div>
                                 </div>
@@ -164,7 +166,9 @@ const Vote = () => {
                                                 <div>Once the button clicked it can not be undo.</div>
                                             </div>
                                         </div>
-                                        <div className="vote-page-cast-vote-button" onClick={confirmationHandler} >Cast Vote</div>
+                                        {isVotingStart &&
+                                            <div className="vote-page-cast-vote-button" onClick={confirmationHandler} >Cast Vote</div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +178,9 @@ const Vote = () => {
             </div>
             {showConfirmation &&
                 <div className="cast-vote-popup-main-container">
+                    {loading ? <div>
+                        <Loader/>
+                    </div> :
                     <div className="cast-vote-confirmation-popup">
                         <div>Voter Id :
                             {trackStudent.toUpperCase()}
@@ -187,8 +194,8 @@ const Vote = () => {
                                 document.body.style.overflow = '';
                             }}>No</div>
                         </div>
-                    </div>
-                </div>    
+                    </div>}
+                </div>
             }
         </div>
     )

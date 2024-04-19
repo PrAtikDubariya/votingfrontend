@@ -50,7 +50,7 @@ const Navbar = () => {
                             borderBottom: isActive ? '2px solid #673ab7' : 'none'
                         })}>
                             <div className="menu-buttons">Vote</div>
-                        </NavLink> : <div onClick={()=> {toast.error("You have not Register")}} className="menu-buttons">Voter</div>}
+                        </NavLink> : <div onClick={()=> {toast.error("You have not Register")}} className="menu-buttons">Vote</div>}
                     {isLogIn ? (
                         <div onClick={clickHandler}>
                             <NavLink style={({ isActive }) => ({

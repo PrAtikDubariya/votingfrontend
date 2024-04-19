@@ -82,6 +82,7 @@ const AdminVoters = () => {
                                     <div>Last Year : {voter.admissionYear + 4}</div>
                                     <div>Gender : {voter.gender}</div>
                                     <div>Email : {voter.email}</div>
+                                    <div>Has Vote : {voter.hasVoted}</div>
                                 </div>
                                 <div className="remove-card-icon" onClick={() => handleRemoveVoter(voter.enrollmentNumber)} ><FaTrash /></div>
                             </div>

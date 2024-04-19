@@ -3,16 +3,26 @@ import Features from "./Features";
 import decentralizedImage from "../images/home-image.jpeg";
 import { useNavigate } from "react-router-dom";
 import VoteStep from "./VoteStep";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Home = () => {
 
     const navigate = useNavigate();
+    const { winners, isResult, setIsResult } = useContext(AppContext);
+
 
     const scroll = () => {
 
         navigate("/about");
     
     }
+
+    // Function to close the result modal
+    const clickHandler = () => {
+        setIsResult(false);
+    }
+
 
     return (
         <div>
@@ -35,7 +45,25 @@ const Home = () => {
                 </div>
             </div>
             <Features />
-            <VoteStep/>
+            <VoteStep />
+            {isResult && (
+                <div className="result-modal">
+                    <div className="result-content">
+                        <h2>Voting Result is Declared</h2>
+                        <p>Winner:</p>
+                        <div>{winners.map((winner) => (
+                            <div>
+                                <p>Name: {winner.firstName} {winner.lastName}</p>
+                                <p>Enrollment Number: {winner.enrollmentNumber}</p>
+                                <p>Vote : {winner.voteCount}</p>
+                            </div>))}
+                        </div>
+                        <button className="close-button" onClick={clickHandler}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 

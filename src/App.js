@@ -16,36 +16,66 @@ import AdminCandidates from './pages/admin/AdminCandidates';
 import { io } from 'socket.io-client';
 import { ADDRESS } from './pages/constants';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 
 function App() {
 
-  const { isAdminLogIn, setIsVotingStart, setVotingDuration } = useContext(AppContext);
+  const { isAdminLogIn, setIsVotingStart, setVotingDuration, setIsResult, setWinners } = useContext(AppContext);
 
   useEffect(() => {
     const socket = io.connect(ADDRESS);
 
+    const checkVotingStatus = async () => {
+      const response = await axios.post("http://localhost:3001/api/admin/get/voting/status");
+      setIsVotingStart(response.data.votingStatus)
+    }
+
     socket.on('connect', () => {
-        console.log('Connected to server');
+      console.log('Connected to server');
+      if (checkVotingStatus()) {
+        setIsVotingStart(true);
+      }
     });
 
     socket.on('votingStarted', ({ isVotingStart }) => {
         console.log('Voting has started:', isVotingStart);
         toast.info("Voting has been started");
-        setIsVotingStart(true);
+        setIsVotingStart(isVotingStart);
     });
 
     socket.on('votingDuration', ({ votingDuration }) => {
+
       setVotingDuration(votingDuration);
     });
 
     socket.on('votingEnded', ({ isVotingStart }) => {
       toast.info("Voting has been ended");
       setIsVotingStart(isVotingStart);
-    })
+    });
+
+    socket.on('resultDeclared', ({ isResult }) => {
+      toast.info(`is Result Declared ${isResult}`);
+      console.log("Result isssssss ==== >>>>>>>",isResult);
+      setIsResult(isResult);
+    });
+
+    socket.on('Winners', ({ winners }) => {
+      toast.info("Winners");
+      console.log("Winners are : ======= >>>>>> ",winners);
+      setWinners(winners);
+    });
+
+    socket.on('reconnect', ({ isVotingStart }) => {
+      checkVotingStatus()
+    });
+
+    return () => {
+      socket.disconnect();
+    }
     
-}, [setIsVotingStart,setVotingDuration]);
+}, [setIsVotingStart,setVotingDuration,setIsResult,setWinners]);
 
   return (
     <div className="App">

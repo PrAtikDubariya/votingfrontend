@@ -7,6 +7,7 @@ import { TextField } from "@mui/material";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Loader from "../Loader";
+import { toast } from "react-toastify";
 
 const AdminCandidates = () => {
 
@@ -53,7 +54,6 @@ const AdminCandidates = () => {
         await axios.post("http://localhost:3001/api/admin/set/voting/status/true", {
             votingDuration:votingDuration
         });
-        startTimer();
         setLoading(false);
     }
 
@@ -62,40 +62,58 @@ const AdminCandidates = () => {
         console.log(response.data.isVotingStart);
         setIsVotingStart(response.data.isVotingStart);
         setRemainingTime("00:00:00");
+        proceedBatchVotes();
     };
 
-    const startTimer = () => {
-        const endTime = Date.now() + votingDuration * 1000;
-        updateRemainingTime(endTime);
+    const proceedBatchVotes = async () => {
+        const response = await axios.post("http://localhost:3001/api/admin/proceed/batch/votes");
+        console.log(response);
+        toast.info("Votes are Counted Successfully");
+        getWinner();
+    }
+
+    const getWinner = async () => {
+        const response = await axios.post("http://localhost:3001/api/admin/get/winner");
+        console.log(response.data.winners);
+        toast.info("result is declared");
+    }
+
+    const calculateRemainingTime = () => {
+        if (isVotingStart && votingDuration) {
+            const endTime = new Date(votingDuration);
+            const difference = endTime - new Date();
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                // If time has elapsed, end the voting
+                endVotingHandler();
+                return "Voting ended";
+            }
+        } else {
+            return "Voting not started";
+        }
+    };
     
-        const timerInterval = setInterval(() => {
-          updateRemainingTime(endTime);
-    
-          if (Date.now() >= endTime) {
-            clearInterval(timerInterval);
-            endVotingHandler();
-          }
+
+    useEffect(() => {
+        // Update remaining time every second
+        const timer = setInterval(() => {
+            setRemainingTime(calculateRemainingTime());
         }, 1000);
-    };
+
+        // Clear the interval on component unmount
+        return () => clearInterval(timer);
+    }, [votingDuration]);
+
     
-    const updateRemainingTime = (endTime) => {
-        const now = Date.now();
-        const timeDifference = new Date(endTime - now);
-        const hours = timeDifference.getUTCHours();
-        const minutes = timeDifference.getUTCMinutes();
-        const seconds = timeDifference.getUTCSeconds();
-    
-        const formattedTime =
-            `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-        setRemainingTime(formattedTime);
-    };
 
     const handleDurationChange = (event) => {
-        const value = event.target.value;
-        const parsedValue = parseInt(value, 10);
-        if (!isNaN(parsedValue) && parsedValue > 0) {
-          setVotingDuration(parsedValue * 60);
-        }
+        const value = event.target.value;        
+        setVotingDuration(value);
 
         console.log(isVotingStart);
     };
