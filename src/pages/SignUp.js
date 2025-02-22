@@ -42,7 +42,7 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3001/api/login/signup", {
+      const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/signup", {
         firstName: studentSignUp.firstName,
         lastName: studentSignUp.lastName,
         admissionYear: studentSignUp.admissionYear,
@@ -129,7 +129,7 @@ export default function SignUp() {
       toast.info("OTP sent successfully");
       setLoading(true);
       try {
-        const response = await axios.post("http://localhost:3001/api/login/getotp", {
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/getotp", {
           enrollmentNumber:studentSignUp.enrollmentNumber,
           email:studentSignUp.email
         });

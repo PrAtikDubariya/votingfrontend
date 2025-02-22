@@ -40,7 +40,7 @@ const AdminNavbar = () => {
 
     const getData = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/api/login/getalldata");
+            const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/getalldata");
             addNotification(response.data.signUpData);    
             setNotificationIcon(true);
         } catch (error) {

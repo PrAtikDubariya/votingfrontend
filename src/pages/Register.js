@@ -34,7 +34,7 @@ const Register = () => {
 
     React.useEffect(() => {
         const fetchVotingStatus = async () => {
-            const response = await axios.post("http://localhost:3001/api/admin/get/voting/status");
+            const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/get/voting/status");
             if (response.data.votingStatus === true) {
                 console.log(response.data.votingStatus);
                 setIsVotingStart(response.data.votingStatus);
@@ -50,7 +50,7 @@ const Register = () => {
             const validateInputResponse = await validateInput();
             console.log(validateInputResponse);
             if (validateInputResponse) {
-                const response = await axios.post("http://localhost:3001/api/login/getotp/registration", {
+                const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/getotp/registration", {
                     enrollmentNumber: studentRegister.enrollmentNumber
                 });
                 toast.info("Check Your Mail");
@@ -68,7 +68,7 @@ const Register = () => {
             setLoading(true);
             if (studentRegister.role.toLowerCase() === "voter") {
                 try {
-                    const response = await axios.post("http://localhost:3001/api/login/registervoter", {
+                    const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/registervoter", {
                         enrollmentNumber: studentRegister.enrollmentNumber
                     });
                     console.log(response);
@@ -85,7 +85,7 @@ const Register = () => {
                 }
             } else if (studentRegister.role.toLowerCase() === "candidate") {
                 try {
-                    const response = await axios.post("http://localhost:3001/api/login/registercandidate", {
+                    const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/registercandidate", {
                         enrollmentNumber: studentRegister.enrollmentNumber
                     });
                     console.log(response);

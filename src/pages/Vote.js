@@ -18,7 +18,7 @@ const Vote = () => {
 
         const fetchVoters = async () => {
             try {
-                const response = await axios.post("http://localhost:3001/api/admin/getallcandidate");
+                const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/getallcandidate");
                 setCandidate(response.data.candidateData);
             } catch (error) {
                 console.log(error);
@@ -57,7 +57,7 @@ const Vote = () => {
         console.log("Candidate is :", selectedCandidate);
         setLoading(true);
 
-        const response = await axios.post("http://localhost:3001/api/login/cast/vote", {
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/cast/vote", {
             voterId: trackStudent,
             candidateId: selectedCandidate
         });

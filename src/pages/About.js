@@ -2,8 +2,6 @@ import React from "react";
 import "./CSS/About.css";
 // import { useNavigate } from "react-router-dom";
 // import { FaChevronRight } from "react-icons/fa";
-import aboutImg2 from "../images/about-img-1.webp";
-import aboutImg1 from "../images/about-img-2.webp";
 import Feature from "./Feature";
 
 const About = () => {
@@ -34,8 +32,8 @@ const About = () => {
             </div> */}
             <div className="about-body">
                 <div className="about-images">
-                    <div className="about-img-1" ><img src={aboutImg1} alt="about-img-1" height={250} ></img></div>
-                    <div className="about-img-2" ><img src={aboutImg2} alt="about-img-2" height={250} ></img></div>
+                    <div className="about-img-1" ><img src={`${process.env.PUBLIC_URL}/images/about-img-1.webp`} alt="about-img-1" height={250} ></img></div>
+                    <div className="about-img-2" ><img src={`${process.env.PUBLIC_URL}/images/about-img-2.webp`} alt="about-img-2" height={250} ></img></div>
                 </div>
                 <div className="body-text">
                     <div className="body-about-company">About Company</div>

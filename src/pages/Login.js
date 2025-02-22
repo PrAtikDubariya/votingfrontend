@@ -81,7 +81,7 @@ export default function Login() {
   const checkRegistrationStatus = async () => {
     try {
       console.log(studentLogIn.enrollmentNumber);
-      const response = await axios.post("http://localhost:3001/api/admin/getsinglevoter", {
+      const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/getsinglevoter", {
         enrollmentNumber:studentLogIn.enrollmentNumber
       });
       console.log(response);
@@ -117,7 +117,7 @@ export default function Login() {
 
       setLoading(true);
       try {
-        const response = await axios.post("http://localhost:3001/api/login/signin", {
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/signin", {
           enrollmentNumber:studentLogIn.enrollmentNumber,
           role:studentLogIn.role
         });

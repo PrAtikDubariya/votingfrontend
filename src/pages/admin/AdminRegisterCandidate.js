@@ -55,7 +55,7 @@ export default function AdminRegisterCandidate() {
 
   const registerCandidate = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/api/admin/registercandidate", {
+      const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/registercandidate", {
         enrollmentNumber: register.enrollmentNumber,
       });
       if (!response.data.isLock) {
@@ -77,7 +77,7 @@ export default function AdminRegisterCandidate() {
 
   const isCandidateSignUp = async () => {
     setLoading(true);
-    const response = await axios.post("http://localhost:3001/api/login/getalldata");
+    const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/login/getalldata");
     const allSignUps = response.data.signUpData;
     const enrollmentNumbers = allSignUps.map(student => student.enrollmentNumber);
 

@@ -1,8 +1,6 @@
 import React from "react";
 import "./CSS/Feature.css";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import feature1Image from "../images/feature1-image.png";
-import feature2Image from "../images/feature2-image.png";
 
 const Feature = () => {
     return (
@@ -10,7 +8,7 @@ const Feature = () => {
             <div className="feature-container">
                 <div className="main-feature">
                     <div className="image-container">
-                        <img src={feature1Image} height={450} width={450} alt="fake-img" />
+                        <img src={`${process.env.PUBLIC_URL}/images/feature1-image.png`} height={450} width={450} alt="fake-img" />
                     </div>
                     <div className="text-container">
                         <div className="feature-header">
@@ -30,7 +28,7 @@ const Feature = () => {
                     </div>
                 </div>
                 <div className="main-feature2"><div className="image-container">
-                        <img src={feature2Image} height={450} width={450} alt="fake-img" />
+                        <img src={`${process.env.PUBLIC_URL}/images/feature2-image.png`} height={450} width={450} alt="fake-img" />
                     </div>
                     <div className="text-container">
                         <div className="feature-header">

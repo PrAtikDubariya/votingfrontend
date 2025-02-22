@@ -14,7 +14,7 @@ const AdminVoters = () => {
         const fetchVoters = async () => {
             setLoading(true);
             try {
-                const response = await axios.post("http://localhost:3001/api/admin/getallvoter");
+                const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/getallvoter");
                 setVoters(response.data.voterData);
             } catch (error) {
                 console.log(error);
@@ -42,7 +42,7 @@ const AdminVoters = () => {
         enrollmentNumber = enrollmentNumber.toUpperCase();
 
         try {
-            const response = await axios.post("http://localhost:3001/api/admin/remove/voter", {
+            const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/remove/voter", {
                 enrollmentNumber:enrollmentNumber
             });
             toast.success(response.data.message);
@@ -51,7 +51,7 @@ const AdminVoters = () => {
             console.log(error);
         }
         try {
-            const response = await axios.post("http://localhost:3001/api/admin/getallvoter");
+            const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/getallvoter");
             setVoters(response.data.voterData);
         } catch (error) {
             console.log(error);

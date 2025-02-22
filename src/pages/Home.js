@@ -1,6 +1,5 @@
 import "./CSS/Home.css"
 import Features from "./Features";
-import decentralizedImage from "../images/home-image.jpeg";
 import { useNavigate } from "react-router-dom";
 import VoteStep from "./VoteStep";
 import { useContext } from "react";
@@ -41,7 +40,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="right-side">
-                    <img src={decentralizedImage} alt="homepage" />
+                    <img src={`${process.env.PUBLIC_URL}/images/home-image.jpeg`} alt="homepage" />
                 </div>
             </div>
             <Features />

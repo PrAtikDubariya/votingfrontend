@@ -39,7 +39,7 @@ const AdminCandidates = () => {
 
     useEffect(() => {
         const fetchVoters = async () => {
-            const response = await axios.post("http://localhost:3001/api/admin/getallcandidate");
+            const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/getallcandidate");
             console.log(response);
             setCandidate(response.data.candidateData);
         }
@@ -51,14 +51,14 @@ const AdminCandidates = () => {
     
     const startVotingHandler = async () => {
         setLoading(true);
-        await axios.post("http://localhost:3001/api/admin/set/voting/status/true", {
+        await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/set/voting/status/true", {
             votingDuration:votingDuration
         });
         setLoading(false);
     }
 
     const endVotingHandler = async () => {
-        const response = await axios.post("http://localhost:3001/api/admin/set/voting/status/false");
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/set/voting/status/false");
         console.log(response.data.isVotingStart);
         setIsVotingStart(response.data.isVotingStart);
         setRemainingTime("00:00:00");
@@ -66,14 +66,14 @@ const AdminCandidates = () => {
     };
 
     const proceedBatchVotes = async () => {
-        const response = await axios.post("http://localhost:3001/api/admin/proceed/batch/votes");
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/proceed/batch/votes");
         console.log(response);
         toast.info("Votes are Counted Successfully");
         getWinner();
     }
 
     const getWinner = async () => {
-        const response = await axios.post("http://localhost:3001/api/admin/get/winner");
+        const response = await axios.post("https://votingbackend-n4t4.onrender.com/api/admin/get/winner");
         console.log(response.data.winners);
         toast.info("result is declared");
     }
@@ -124,7 +124,7 @@ const AdminCandidates = () => {
                 <div className="admin-candidate-previous-winner-container">
                     <div className="admin-candidate-previous-winner">
                         <h1 className="admin-candidate-header-text">Previous Election Winner</h1>
-                        <h1 className="admin-candidate-winner">Winner</h1>
+                        <h1 className="admin-candidate-winner">Pratik Dubariya</h1>
                     </div>
                 </div>
                 <div className="admin-candidate-register-candidate">
